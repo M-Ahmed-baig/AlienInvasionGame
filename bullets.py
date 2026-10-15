@@ -7,9 +7,10 @@ class Bullet(Sprite):
     """ Manage bullet's starting position,movement etc."""
     def __init__(self,ship:Ship,ai_settings:Setting,screen):
         super().__init__() 
-        self.screen =screen
-        self.bullet_rect = pygame.Rect(0,0,ai_settings.bullet_width,
-                                       ai_settings.bullet_height)
+        self.screen = screen
+        self.setting = ai_settings
+        self.bullet_rect = pygame.Rect(0,0,self.setting.bullet_width,
+                                       self.setting.bullet_height)
         
 
         self.bullet_rect.centerx = ship.ship_rect.centerx
@@ -36,9 +37,9 @@ class Bullet(Sprite):
             self.kill()
 
     def draw_bullet(self):
-        """Move the circle shaped bullet to the screen."""
-        pygame.draw.circle(self.screen,self.bullet_color,self.bullet_rect.center,
-                           4)
+        """Move the bullets up the screen."""
+        pygame.draw.rect(self.screen ,self.setting.bullet_color ,
+                    self.bullet_rect)
             
 
 

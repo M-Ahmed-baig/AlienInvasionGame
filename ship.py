@@ -7,7 +7,7 @@ class Ship():
     def __init__(self,screen,ai_settings:Setting):
         self.screen=screen
         self.image=pygame.image.load('images/space_ship.png')
-        self.image= pygame.transform.scale(self.image, (50, 60))
+        self.image= pygame.transform.scale(self.image, (40, 50))
         self.ship_rect=self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen.
@@ -22,7 +22,7 @@ class Ship():
         self.center=float(self.ship_rect.centerx)
         self.speed=ai_settings.ship_speed_factor
 
-    def blit_me(self):
+    def blitme(self):
         self.screen.blit(self.image,self.ship_rect)
 
     def update(self):
