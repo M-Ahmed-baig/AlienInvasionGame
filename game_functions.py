@@ -16,6 +16,10 @@ def fire_bullet(bullets ,ai_settings ,ship ,screen):
         bullet=Bullet(ship ,ai_settings ,screen)
         bullets.add(bullet)
 
+def update_bullet(aliens, bullets):
+    pygame.sprite.groupcollide(bullets, aliens, True, True)
+    pass
+
 def check_keydown_event(event ,ship:Ship ,ai_settings ,bullets ,screen):
     """Check which key was pressed."""
     if event.key == pygame.K_SPACE:
