@@ -8,35 +8,35 @@ class Ship():
         self.screen=screen
         self.image=pygame.image.load('images/space_ship.png')
         self.image= pygame.transform.scale(self.image, (40, 50))
-        self.ship_rect=self.image.get_rect()
+        self.rect=self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen.
         self.screen_rect = screen.get_rect()
-        self.ship_rect.centerx = self.screen_rect.centerx
-        self.ship_rect.bottom = self.screen_rect.bottom
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
 
         # Controls ship's right and left movement flags ,speed and update new 
         # position.
         self.moving_right = False
         self.moving_left = False
-        self.center=float(self.ship_rect.centerx)
+        self.center=float(self.rect.centerx)
         self.speed=ai_settings.ship_speed_factor
 
     def blitme(self):
-        self.screen.blit(self.image,self.ship_rect)
+        self.screen.blit(self.image,self.rect)
 
     def update(self):
       
         """Update the ship's position based on the movement flag and ship right
          and left range."""
         
-        if self.moving_right and self.ship_rect.right < self.screen_rect.right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.speed
-            self.ship_rect.centerx=self.center
+            self.rect.centerx=self.center
 
-        if self.moving_left and self.ship_rect.left > self.screen_rect.left:
+        if self.moving_left and self.rect.left > self.screen_rect.left:
             self.center -= self.speed
-            self.ship_rect.centerx=self.center
+            self.rect.centerx=self.center
            
                  
                  

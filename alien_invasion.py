@@ -4,7 +4,6 @@ from settings import Setting
 from ship import Ship
 import game_functions as gf
 from pygame.sprite import Group
-import pygame._sdl2
 
 def run_game():
     """Sets all game objects and run the game."""
@@ -27,9 +26,8 @@ def run_game():
     aliens = Group()
 
     # Create the fleet of aliens.
-    gf.create_fleet(screen ,aliens ,ai_settings ,ship.ship_rect.height)
+    gf.create_fleet(screen ,aliens ,ai_settings ,ship.rect.height)
     
-
     # Define frame rate & Block mouse motion event.
     clock=pygame.time.Clock()
     pygame.event.set_blocked(pygame.MOUSEMOTION)
@@ -37,15 +35,18 @@ def run_game():
 
     # Game Loop.
     while True:
-        gf.check_events(ship,ai_settings,bullets,screen)
+        gf.check_events(ship, ai_settings, bullets, screen)
        
         ship.update()
 
         bullets.update()
 
-        gf.update_aliens(ai_settings, aliens)
-      
-        gf.update_screen(screen,ship,ai_settings,bullets,aliens)
+        gf.check_alien_bullet_collision(bullets, screen, aliens, ai_settings,
+                                    ship.rect.height)
+
+        gf.update_aliens(screen, ai_settings, aliens, ship, bullets)
+
+        gf.update_screen(screen, ship, ai_settings, bullets, aliens)
 
         clock.tick(100)
 run_game()

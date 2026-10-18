@@ -10,15 +10,31 @@ from alien import Alien
 # (ship:Ship) means ship is the object of class Ship so vscode list its 
 # attributes and methods.
 
+def new_beginning(screen, aliens, bullets, ai_settings, ship:Ship):
+    ship_height = ship.rect.height
+    screen_rect = screen.get_rect()
+    aliens.empty()
+    bullets.empty()
+    ship.rect.centerx = screen_rect.centerx
+    create_fleet(screen, aliens, ai_settings, ship_height)
+
 def fire_bullet(bullets ,ai_settings ,ship ,screen):
     "Create a new bullet and add it to the bullets group."
     if len(bullets) < ai_settings.bullets_allowed:
         bullet=Bullet(ship ,ai_settings ,screen)
         bullets.add(bullet)
 
-def update_bullet(aliens, bullets):
+def check_alien_bullet_collision(bullets, screen, aliens, ai_settings,
+                             ship_height):
+    """Respond to bullet-alien collisions."""
+    # Remove any bullets and aliens that have collided.
     pygame.sprite.groupcollide(bullets, aliens, True, True)
-    pass
+
+    if len(aliens) == 0:
+        # Destroy existing bullets and create new fleet.
+        bullets.empty()
+        create_fleet(screen, aliens, ai_settings, ship_height)
+        
 
 def check_keydown_event(event ,ship:Ship ,ai_settings ,bullets ,screen):
     """Check which key was pressed."""
@@ -104,13 +120,18 @@ def change_fleet_direction(ai_settings, aliens):
          alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
 
-def update_aliens(ai_settings, aliens):
+def update_aliens(screen, ai_settings, aliens, ship, bullets):
     """
     Check if the fleet is at an edge,
     and then update the postions of all aliens in the fleet.
     """
-    check_fleet_edges(ai_settings, aliens)
+    check_fleet_edges(ai_settings, aliens) 
     aliens.update()
+    
+    # Look for alien-ship collisions.
+    alien = pygame.sprite.spritecollideany(ship, aliens)
+    if alien:
+        new_beginning(screen, aliens, bullets, ai_settings, ship)
 
 def update_screen(screen ,ship:Ship ,ai_settings:Setting ,bullets ,aliens):
     " Update the game screen every frame."
